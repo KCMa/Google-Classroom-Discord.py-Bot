@@ -64,11 +64,9 @@ async def hello(ctx):     #say hello
 @bot.command()
 async def env(ctx):     #display environment data
     await ctx.send('小英為你獲取資料中，請你稍等...')
-    envis=fetchEnvData()
-    # embedFields=[]
-    # for envi in envis:
-    #     embedFields.append('地點：{}'&envi('location'))
-    # await ctx.send(embedFields)
+    embedList=fetchEnvData()
+    for embed in embedList:
+      await ctx.send(embed=embed)
 
 
 @bot.command()
