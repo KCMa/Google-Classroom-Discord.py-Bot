@@ -57,11 +57,6 @@ async def on_ready():
 # ========== Bot Commands ==========
 
 @bot.command()
-async def hello(ctx):     #say hello
-    await ctx.send(f"hello, {ctx.author.name}")
-
-
-@bot.command()
 async def env(ctx):     #display environment data
     await ctx.send('小英為你獲取資料中，請你稍等...')
     embedList=fetchEnvData()
