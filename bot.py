@@ -3,9 +3,10 @@
 from datetime import datetime
 import logging
 import json
-import os.path
+import os
 import re
 from tkinter import FALSE
+import keep_alive
 
 import discord
 from discord.ext import commands, tasks
@@ -119,12 +120,8 @@ async def timetable(ctx, arg1='', arg2=''):  # Timetable Command
 
 # ========= Run(start) the bot =========
 
-# load secrets (json)
-f = open('secrets.json')
-secrets = json.load(f)
 
-import keep_alive
 keep_alive.keep_alive()
 # run the bot
-bot.run(secrets["token"])
+bot.run(os.environ['token'])
 
