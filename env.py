@@ -14,14 +14,14 @@ def fetchEnvData() -> dict:
     ssl._create_default_https_context = ssl._create_unverified_context
     with urllib.request.urlopen("https://iot.spyc.hk/spycenv") as url:
         results = url.read().decode()
-        data = json.loads(results)
+        envData = json.loads(results)
 
         # save data as /timetable.json
 
 
         # Return timetable
-        print(data)
-        return data
+        print(envData)
+        return envData
 
 
 # def getLessonList(class_: str, day: str) -> list:

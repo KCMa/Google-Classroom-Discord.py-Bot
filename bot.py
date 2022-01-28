@@ -130,5 +130,8 @@ async def timetable(ctx, arg1='', arg2=''):  # Timetable Command
 f = open('secrets.json')
 secrets = json.load(f)
 
+import keep_alive
+keep_alive.keep_alive()
 # run the bot
 bot.run(secrets["token"])
+
