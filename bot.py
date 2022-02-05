@@ -10,6 +10,8 @@ from tkinter import FALSE
 import discord
 from discord.ext import commands, tasks
 
+import calculator
+
 from timetable import getDayOfCycle, getLessonList
 
 from env import fetchEnvData
@@ -33,7 +35,7 @@ logger.addHandler(handler)
 activity = discord.Activity(
     type=discord.ActivityType.listening, name="$timetable today <class>")
 intents = discord.Intents().all()  # Specify the bot intents
-bot = commands.Bot(command_prefix='$',
+bot = commands.Bot(command_prefix='egg ',
                    intents=intents, activity=activity)  # Create the bot client
 service = None  # Will be used to store Google Classroom API Service
 
@@ -55,14 +57,38 @@ async def on_ready():
 
 
 # ========== Bot Commands ==========
+@bot.command()
+async def hello(ctx):     #say hello
+    await ctx.send(f"hello, {ctx.author.display_name}")
 
 @bot.command()
+async def joinvoice(ctx):
+    channel = ctx.message.author.voice.channel
+    voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
+    if voice and voice.is_connected():
+        await voice.move_to(channel)
+    else:
+        voice = await channel.connect()
+
+    
+@bot.command()
 async def env(ctx):     #display environment data
-    await ctx.send('小英為你獲取資料中，請你稍等...')
+    reply = await ctx.send('小英為你獲取資料中，請你稍等...')
     embedList=fetchEnvData()
+    await reply.edit(content='環境資料如下：')
     for embed in embedList:
       await ctx.send(embed=embed)
 
+@bot.command()
+async def simeq(ctx,x1,y1,c1,x2,y2,c2):     #solve simutaneous equation
+    solution=calculator.simultaneousEq(x1,y1,c1,x2,y2,c2)
+    await ctx.send('x={} \n y={}'.format(*solution))
+
+@bot.command()
+async def quaeq(ctx,A,B,C):     #solve quadratic equation
+    solution=calculator.quadraticEq(A,B,C)
+    await ctx.send('x={} or \nx={}'.format(*solution))
+      
 
 @bot.command()
 async def timetable(ctx, arg1='', arg2=''):  # Timetable Command
@@ -119,12 +145,10 @@ async def timetable(ctx, arg1='', arg2=''):  # Timetable Command
 
 # ========= Run(start) the bot =========
 
-# load secrets (json)
-f = open('secrets.json')
-secrets = json.load(f)
-
 import keep_alive
 keep_alive.keep_alive()
+
+
 # run the bot
-bot.run(secrets["token"])
+bot.run(os.environ['token'])
 

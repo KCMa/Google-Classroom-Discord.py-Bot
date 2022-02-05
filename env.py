@@ -20,7 +20,7 @@ def fetchEnvData() -> dict:
           envEmbed.add_field(name="Temperature:", value="{temperature}°C".format(**env), inline=True)
           envEmbed.add_field(name="Relative humidity:", value="{relativeHumidity}%".format(**env), inline=True)
           envEmbed.add_field(name="Air pressure:", value="{airPressure}kPa".format(**env), inline=True)
-          envEmbed.add_field(name="Last update:", value="{lastUpdate}".format(**env), inline=True)
+          envEmbed.add_field(name="Last update:", value="<t:{epoch}:f>".format(**env), inline=True)
           embedList.append(envEmbed)
         print(embedList)
         return embedList
